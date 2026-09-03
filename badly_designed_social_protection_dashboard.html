@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrated Control Dashboard - Social Protection Network</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .glow-red {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
+
+    <!-- Main Header -->
+    <header class="bg-slate-800 border-b border-slate-700 p-4 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-red-600/20 text-red-500 p-2 rounded-lg border border-red-500/30">
+                    <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wide text-white">INTEGRATED SOCIAL PROTECTION & IT MONITORING SYSTEM</h1>
+                    <p class="text-xs text-slate-400">Version v3.4.1 | Server Status: <span class="text-emerald-400 font-mono">1,200,000 req/day (Latency 42ms)</span></p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <button id="togglePedagogyBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 glow-red">
+                    <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                    <span>Teacher Mode: Analyze Flaws</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Fictional System Alert Banner (For Simulation) -->
+    <div class="bg-red-950/80 border-b border-red-800/50 px-4 py-2 text-center text-xs text-red-300 flex justify-center items-center gap-2">
+        <i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i>
+        <span><strong>SYSTEM WARNING:</strong> Predictive algorithm suggests cutting CCT budget by 25% to reduce national unemployment.</span>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Left & Center Column: Poorly Designed KPIs & Charts -->
+        <section class="lg:col-span-2 space-y-6">
+
+            <!-- Disconnected KPIs (Mix of IT and Social Metrics) -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700">
+                    <span class="text-xs text-slate-400 block font-medium">Total CCT Expenditure</span>
+                    <span class="text-xl font-extrabold text-amber-400 mt-1 block">$450M USD</span>
+                    <span class="text-[10px] text-emerald-400 font-medium">↗ +12% Q3</span>
+                </div>
+                <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700">
+                    <span class="text-xs text-slate-400 block font-medium">Formal Unemployment</span>
+                    <span class="text-xl font-extrabold text-rose-400 mt-1 block">14.2%</span>
+                    <span class="text-[10px] text-rose-400 font-medium">↗ +2.1% Q3</span>
+                </div>
+                <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700">
+                    <span class="text-xs text-slate-400 block font-medium">Child Vaccination Rate</span>
+                    <span class="text-xl font-extrabold text-cyan-400 mt-1 block">88.5%</span>
+                    <span class="text-[10px] text-rose-400 font-medium">↘ -0.4%</span>
+                </div>
+                <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700">
+                    <span class="text-xs text-slate-400 block font-medium">HTTP Server Requests</span>
+                    <span class="text-xl font-extrabold text-indigo-400 mt-1 block">1.2M /day</span>
+                    <span class="text-[10px] text-emerald-400 font-medium">↗ +40% IT</span>
+                </div>
+            </div>
+
+            <!-- False Causality Chart 1: CCT vs Unemployment -->
+            <div class="bg-slate-800/90 p-5 rounded-xl border border-slate-700 shadow-lg relative">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h2 class="text-base font-semibold text-white flex items-center gap-2">
+                            <i data-lucide="trending-up" class="w-5 h-5 text-rose-400"></i>
+                            Model A: Social Spending Impact on Unemployment Rate
+                        </h2>
+                        <p class="text-xs text-slate-400">Automated correlational analysis between cash transfers (CCT) and labor market.</p>
+                    </div>
+                    <span class="bg-rose-500/10 text-rose-400 text-xs px-2.5 py-1 rounded-full border border-rose-500/20 font-mono">Correlation: 0.98</span>
+                </div>
+                <div class="h-64">
+                    <canvas id="cctUnemploymentChart"></canvas>
+                </div>
+                <div class="mt-4 bg-rose-950/40 p-3 rounded-lg border border-rose-800/40 text-xs text-rose-200">
+                    <strong class="text-rose-400 block mb-1">🔍 Automated System Conclusion (Flawed Assumption):</strong>
+                    "Higher disbursement of cash transfers leads to higher formal unemployment. Cash transfers disincentivize active job seeking in the formal economy."
+                </div>
+            </div>
+
+            <!-- False Causality Chart 2: Vaccination vs Dropout -->
+            <div class="bg-slate-800/90 p-5 rounded-xl border border-slate-700 shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h2 class="text-base font-semibold text-white flex items-center gap-2">
+                            <i data-lucide="activity" class="w-5 h-5 text-cyan-400"></i>
+                            Model B: Child Vaccination vs. School Dropout Rate
+                        </h2>
+                        <p class="text-xs text-slate-400">Direct effect of immunization coverage on school retention.</p>
+                    </div>
+                    <span class="bg-cyan-500/10 text-cyan-400 text-xs px-2.5 py-1 rounded-full border border-cyan-500/20 font-mono">Inverse: -0.95</span>
+                </div>
+                <div class="h-64">
+                    <canvas id="healthEducationChart"></canvas>
+                </div>
+                <div class="mt-4 bg-cyan-950/40 p-3 rounded-lg border border-cyan-800/40 text-xs text-cyan-200">
+                    <strong class="text-cyan-400 block mb-1">🔍 Automated System Conclusion (Flawed Assumption):</strong>
+                    "Increasing vaccination rates directly reduces school dropouts. Reallocating education budget to vaccine procurement will guarantee academic retention."
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Right Column: Confusing Info, Tech Logs, and Mixed Metrics -->
+        <section class="space-y-6">
+
+            <!-- Server Telemetry (Irrelevant for Policy Making) -->
+            <div class="bg-slate-800/90 p-5 rounded-xl border border-slate-700 shadow-lg">
+                <h2 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                    <i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i>
+                    Backend Server Logs (Real-Time)
+                </h2>
+                <div class="bg-slate-950 p-3 rounded-lg font-mono text-[11px] text-emerald-400 space-y-1.5 h-40 overflow-y-auto border border-slate-800">
+                    <p>[12:45:01] INFO [Auth] Token valid: uid_88219</p>
+                    <p>[12:45:02] DEBUG [DB] SELECT * FROM cct_beneficiaries (12ms)</p>
+                    <p class="text-amber-400">[12:45:03] WARN [Sync] Health records sync delayed by 300ms</p>
+                    <p>[12:45:05] SUCCESS [API] 45,000 tx processed</p>
+                    <p>[12:45:08] INFO [Cache] Redis memory usage: 64%</p>
+                    <p>[12:45:12] DEBUG [Queue] Worker #3 active</p>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-2">Technical telemetry directly pushed to Minister's dashboard without filtering.</p>
+            </div>
+
+            <!-- Overcrowded Table with Heterogeneous Metrics -->
+            <div class="bg-slate-800/90 p-5 rounded-xl border border-slate-700 shadow-lg">
+                <h2 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                    <i data-lucide="table" class="w-4 h-4 text-amber-400"></i>
+                    Consolidated Indicator Table
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-700 text-slate-400">
+                                <th class="p-2">Metric</th>
+                                <th class="p-2">Value</th>
+                                <th class="p-2">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700/50 text-slate-300">
+                            <tr>
+                                <td class="p-2 font-medium">IT Infrastructure Cost</td>
+                                <td class="p-2 font-mono">$12M USD</td>
+                                <td class="p-2 text-emerald-400">Normal</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-medium">School Dropout Rate (CCT)</td>
+                                <td class="p-2 font-mono">3.1%</td>
+                                <td class="p-2 text-emerald-400">Low</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-medium">Preventive Health Visits/mo</td>
+                                <td class="p-2 font-mono">42,000</td>
+                                <td class="p-2 text-amber-400">Stable</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-medium">CCT Fraud Detection Rate</td>
+                                <td class="p-2 font-mono">0.02%</td>
+                                <td class="p-2 text-emerald-400">Optimal</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-medium">Pending Eligibility Checks</td>
+                                <td class="p-2 font-mono">148,200</td>
+                                <td class="p-2 text-rose-400">Critical</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Wrong Decision Action Prompt -->
+            <div class="bg-slate-800/90 p-5 rounded-xl border border-slate-700 shadow-lg border-l-4 border-l-red-500">
+                <h3 class="text-sm font-semibold text-white mb-2">Automated Policy Recommendation</h3>
+                <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                    Based on simple linear regression models, the system recommends freezing urban CCT enrollments to stimulate formal labor force participation.
+                </p>
+                <button class="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-semibold py-2 rounded-lg transition-colors">
+                    Approve System Recommendation
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Teaching Drawer / Side Panel (Hidden by default, toggled via button) -->
+    <aside id="pedagogyDrawer" class="fixed inset-y-0 right-0 w-full max-w-xl bg-slate-950 text-slate-100 shadow-2xl border-l border-slate-800 transform translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+        <div class="p-6 space-y-6">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <div class="flex items-center space-x-2">
+                    <div class="bg-indigo-600/30 p-2 rounded-lg text-indigo-400">
+                        <i data-lucide="book-open" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-white">Teacher's Pedagogical Guide</h2>
+                        <p class="text-xs text-indigo-400">Deconstructing the 6 Elements of Digital Governance</p>
+                    </div>
+                </div>
+                <button id="closePedagogyBtn" class="text-slate-400 hover:text-white p-1 rounded-lg">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <p class="text-xs text-slate-300 leading-relaxed">
+                Use this sidebar in class to demonstrate how **neglecting the 6 core elements** yields a dashboard that is confusing, misleading, and dangerous for public policy decision-making.
+            </p>
+
+            <div class="space-y-4">
+
+                <!-- 1. Purpose -->
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+                    <div class="flex items-center gap-2 text-rose-400 font-semibold text-sm">
+                        <i data-lucide="target" class="w-4 h-4"></i>
+                        <span>1. Lack of Purpose</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        **The Flaw:** Technical IT management (server requests, latency, raw logs) is mixed with public policy outcome indicators.
+                    </p>
+                    <p class="text-[11px] text-slate-400 italic">
+                        👉 **Ask the class:** Does a Minister of Social Development need real-time HTTP server request rates to make policy decisions?
+                    </p>
+                </div>
+
+                <!-- 2. Data -->
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+                    <div class="flex items-center gap-2 text-amber-400 font-semibold text-sm">
+                        <i data-lucide="database" class="w-4 h-4"></i>
+                        <span>2. Lack of Data Governance</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        **The Flaw:** Unstandardized data devoid of context. Absolute dollar values, percentages without denominators, and daily vs. monthly rates are dumped on one screen.
+                    </p>
+                    <p class="text-[11px] text-slate-400 italic">
+                        👉 **Ask the class:** How can anyone meaningfully compare 42,000 monthly doctor visits against $12M in cloud server costs?
+                    </p>
+                </div>
+
+                <!-- 3. Tools -->
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+                    <div class="flex items-center gap-2 text-cyan-400 font-semibold text-sm">
+                        <i data-lucide="wrench" class="w-4 h-4"></i>
+                        <span>3. Flawed Tools</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        **The Flaw:** Information overload. High-tech charts are chosen for visual appeal rather than conceptual accuracy, resulting in visual noise.
+                    </p>
+                </div>
+
+                <!-- 4. Process -->
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+                    <div class="flex items-center gap-2 text-emerald-400 font-semibold text-sm">
+                        <i data-lucide="git-branch" class="w-4 h-4"></i>
+                        <span>4. Absence of Process</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        **The Flaw:** The dashboard is not linked to operational workflows. When an indicator shifts, no clear action protocol or responsible role is designated.
+                    </p>
+                </div>
+
+                <!-- 5. Methodology -->
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2 border-l-4 border-l-red-500">
+                    <div class="flex items-center gap-2 text-red-400 font-semibold text-sm">
+                        <i data-lucide="brain-circuit" class="w-4 h-4"></i>
+                        <span>5. Faulty Methodology — The Critical Failure</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        **The Flaw (False Causality):**
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-1 list-disc pl-4">
+                        <li><strong>CCT vs. Unemployment:</strong> Assumes transfers *cause* unemployment, ignoring omitted variables like macroeconomic shocks or informal labor markets.</li>
+                        <li><strong>Vaccines vs. School Dropout:</strong> Confuses temporal coincidence with causality (both are conditional requirements of the social program, not direct cause-and-effect).</li>
+                    </ul>
+                </div>
+
+                <!-- 6. People -->
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+                    <div class="flex items-center gap-2 text-indigo-400 font-semibold text-sm">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                        <span>6. Ignoring People (User Experience & Literacy)</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        **The Flaw:** Designed without user empathy. Decision-makers without advanced statistical training will blindly accept automated system recommendations.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </aside>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-3 text-center text-xs text-slate-500">
+        Teaching Resource | Digital Governance Course
+    </footer>
+
+    <!-- Scripts for Charts and Interactivity -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Teaching Drawer Controls
+        const toggleBtn = document.getElementById('togglePedagogyBtn');
+        const closeBtn = document.getElementById('closePedagogyBtn');
+        const drawer = document.getElementById('pedagogyDrawer');
+
+        toggleBtn.addEventListener('click', () => {
+            drawer.classList.remove('translate-x-full');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            drawer.classList.add('translate-x-full');
+        });
+
+        // Chart.js Configuration
+
+        // 1. Chart CCT vs Unemployment (False Causality)
+        const ctx1 = document.getElementById('cctUnemploymentChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025 (Est)', 'Q1 2026 (Est)'],
+                datasets: [
+                    {
+                        label: 'CCT Spending ($ Millions USD)',
+                        data: [100, 180, 290, 380, 450],
+                        borderColor: '#fbbf24',
+                        backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                        yAxisID: 'y',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Formal Unemployment Rate (%)',
+                        data: [11.0, 11.8, 12.9, 13.5, 14.2],
+                        borderColor: '#f43f5e',
+                        backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                        yAxisID: 'y1',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        ticks: { color: '#94a3b8', font: { size: 10 } },
+                        grid: { color: 'rgba(51, 65, 85, 0.5)' }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: { display: true, text: 'USD (Millions)', color: '#fbbf24', font: { size: 10 } },
+                        ticks: { color: '#fbbf24', font: { size: 10 } },
+                        grid: { color: 'rgba(51, 65, 85, 0.5)' }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: { display: true, text: '% Unemployment', color: '#f43f5e', font: { size: 10 } },
+                        ticks: { color: '#f43f5e', font: { size: 10 } },
+                        grid: { drawOnChartArea: false }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: '#cbd5e1', font: { size: 11 } }
+                    }
+                }
+            }
+        });
+
+        // 2. Chart Vaccination vs School Dropout (False Causality)
+        const ctx2 = document.getElementById('healthEducationChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [
+                    {
+                        label: '% Vaccination Coverage',
+                        data: [80, 82, 85, 86, 87, 88.5],
+                        backgroundColor: 'rgba(6, 182, 212, 0.7)',
+                        borderColor: '#06b6d4',
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '% School Dropout Rate',
+                        data: [5.2, 4.8, 4.2, 3.9, 3.5, 3.1],
+                        type: 'line',
+                        borderColor: '#a855f7',
+                        backgroundColor: '#a855f7',
+                        yAxisID: 'y1',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        ticks: { color: '#94a3b8', font: { size: 10 } },
+                        grid: { color: 'rgba(51, 65, 85, 0.5)' }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: { display: true, text: '% Vaccination', color: '#06b6d4', font: { size: 10 } },
+                        ticks: { color: '#06b6d4', font: { size: 10 } },
+                        grid: { color: 'rgba(51, 65, 85, 0.5)' }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: { display: true, text: '% Dropout', color: '#a855f7', font: { size: 10 } },
+                        ticks: { color: '#a855f7', font: { size: 10 } },
+                        grid: { drawOnChartArea: false }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: '#cbd5e1', font: { size: 11 } }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
